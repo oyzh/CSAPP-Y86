@@ -21,7 +21,9 @@ I use the JavaScript to build the machine, and I also implement a assembler for 
 IT JUST RUN.
 
 + LICENCE
+
   GNU GENERAL PUBLIC LICENSE
   
 + AUTHOR
+
   Zhenhuan Ouyang
