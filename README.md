@@ -1,4 +1,4 @@
-the Computer Systems A Programmer's Perspective.
+in book Computer Systems A Programmer's Perspective.
 
 Y86 is a instructions set, which is very small, but it is enough to write a complement program. 
 
