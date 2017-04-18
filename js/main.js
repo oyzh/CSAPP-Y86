@@ -1,3 +1,4 @@
+alert("tets");
 var assembler = new Assembler(); 
 var code_text = exampleAssemCode; // the assemble code
 var machine = new Y86(); 
