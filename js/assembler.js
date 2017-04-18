@@ -3,49 +3,6 @@
 // oyzh@zju.edu.cn
 
 // implement CSAPP y86's assembler
-var exampleAssemCode = "\
-\n      .pos 0\n\
-init:   irmovl Stack, %esp # Set up stack pointer\n\
-        irmovl Stack, %ebp # Set up base pointer\n\
-        call Main          # Excute main program\n\
-        halt               # Terminate program\n\
-\n     .align 4 \n\
-array: .long 0xd \
-\n     .long 0xc0 \
-\n     .long 0xb00 \
-\n     .long 0xa000 \
-\n\
-Main:   pushl %ebp \n\
-        rrmovl %esp,%ebp \n\
-        irmovl $4,%eax \n\
-        pushl %eax        # Push 4 \n\
-        irmovl array,%edx \n\
-        pushl %edx        # Push array \n\
-        call Sum          # Sum(array, 4) \n\
-        rrmovl %ebp,%esp \n\
-        popl %ebp \n\
-        ret \n\
-\n\
-        # int Sum(int *Start, int Count) \n\
-Sum:    pushl %ebp \n\
-        rrmovl %esp,%ebp \n\
-        mrmovl 8(%ebp),%ecx  # ecx = Start \n\
-        mrmovl 12(%ebp),%edx # edx = Count \n\
-        xorl %eax,%eax       # sum = 0 \n\
-        andl %edx,%edx       # Set condition codes \n\
-        je End \n\
-Loop:   mrmovl (%ecx),%esi   # get *Start \n\
-        addl %esi,%eax       # add to sum \n\
-        irmovl $4,%ebx \n\
-        addl %ebx,%ecx       # Start++ \n\
-        irmovl $-1,%ebx \n\
-        addl %ebx,%edx       # Count-- \n\
-        jne Loop             # Stop when 0 \n\
-End:    rrmovl %ebp,%esp \n\
-        popl %ebp \n\
-        ret \
-\n      .pos 0x100 \n\
-Stack: \n";
 
 var Assembler = function(){
   this.code = []; // save the code, e.g. {index1:[0x10,0xff],index2:[0x23,0xff]}
