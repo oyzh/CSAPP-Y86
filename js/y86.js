@@ -2,9 +2,7 @@
 // Copyright (c) 2017 Zhenhuan Ouyang
 // oyzh@zju.edu.cn
 
-
 // implement CSAPP's y86 machine
-
 var Y86 = function(){
   // all registers are 4 bytes, save in javascript just a number
   // some util process it to 4
@@ -18,6 +16,7 @@ var Y86 = function(){
     0x00000000, // 6 %esi
     0x00000000  // 7 %edi
   ];
+	
   // condition
   this.CC = {ZF:false, SF:false, OF:false};
 
@@ -62,7 +61,7 @@ var Y86 = function(){
   };
 
 // TODO 1 : excutation file format and loader
-// TODO 2 : a assember
+// DONE 2 : a assember
 // TODO 3 : a compiler from high level language(like C) to assemble language
 
 Y86.prototype = {
@@ -71,19 +70,17 @@ Y86.prototype = {
   loadProgram: function(file){
 
   },
+	
   loadBinCode: function(text){
-	for(var i = 0;i<text.length;i++){
+    for(var i = 0;i<text.length;i++){
 		this.DMEM[i] = text[i];
     }
-	this.PC = 0x000000000;
+    this.PC = 0x000000000;
   },
+	
   exampleProgram: function(){
-    for(var i = 0; i < exampleCode.length; i++){
-      // init the system
-      this.DMEM[i] = exampleCode[i];
-    }
-    this.PC = 0x00000000;
-
+    var text = exampleCode;
+    this.loadBinCode(text);
   },
 
   /////////////////////////////////
@@ -131,11 +128,10 @@ Y86.prototype = {
     }
     return arr;
   },
-     /////////////////////////////////
+  /////////////////////////////////
 
   // fetch instruction
   fetchInstr : function(){
-
     this.imem_error = false;
     this.instr_valid = true;
 
@@ -286,7 +282,6 @@ Y86.prototype = {
     // run alu and set Cnd
     var alufun = this.ALUADD;
     if (this.icode == this.IOPL) alufun = this.ifun;
-
     if (alufun == 0) {// addl
       this.valE = aluB + aluA;
     } else if (alufun == 1){ // subl
@@ -340,6 +335,7 @@ Y86.prototype = {
       this.STAT= this.SADR;
     }
   },
+	
   // acess memory
   accessMemory : function(){
     var mem_addr = 0;
@@ -417,12 +413,12 @@ Y86.prototype = {
     this.updatePC();
   },
 
-  // save machine
+  // TODO:save machine
   toJson : function(){
     var json = {};
   },
 
-  // load machine
+  // TODO:load machine
   fromJson : function(json){
   }
 };
