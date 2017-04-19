@@ -119,12 +119,6 @@ Assembler.prototype = {
   },
 
   getImmNumber: function(s){
-    // 1. is symbol
-    // 2. begin with $
-    // 3. number
-    // 4. maybe a null str
-    // 5. 16 or 10 
-    // return 4 bytes, e.g. [0xff,0x22,0x33,0xff]
     if (s == ''){
       return [0x00,0x00,0x00,0x00];
     }
@@ -151,9 +145,9 @@ Assembler.prototype = {
   },
   
   proTokenSent: function(tokens, sentence){
+    
     if(tokens[0] == this.SYMBOLDEF){
 
-      // the symbol
       var sym = sentence[0];
       sym = sym.slice(0,sym.length-1);
       if(this.symbol_table[sym] === undefined) {
@@ -172,25 +166,26 @@ Assembler.prototype = {
     var inumber  = [0x00,0x00,0x00,0x00];
     var has_reg  = false;
     var has_inum = false;
+    
+    // TODO: ERROR PROCESS
     if (tokens[0] == this.HALT) {
-      // halt
       code_fun = 0x00;
+      
     } else if (tokens[0] == this.NOP) {
-      // nop
       code_fun = 0x10;
+      
     } else if (tokens[0] == this.RRMOVL) {
-      // rrmovl
       rA = this.getRegister(sentence[1]);
       rB = this.getRegister(sentence[2]);
       has_reg = true;
       code_fun = 0x20;
+      
     } else if (tokens[0] == this.IRMOVL){
-      // TODO error process
       if(tokens[1] == this.IMMEDIATELY){
         inumber = this.getImmNumber(sentence[1]);
       }
       else{
-        // symbol cite
+        // symbol cite, save it in write_back, now only write 0x00000000
         if(this.write_back[sentence[1]] != undefined) {
           this.write_back[sentence[1]].push(this.code_pos+2);
         } else {
@@ -201,14 +196,15 @@ Assembler.prototype = {
       has_reg = true;
       has_inum = true;
       code_fun = 0x30;
+      
     } else if(tokens[0] == this.RMMOVL){
-      //TODO error process
       rA = this.getRegister(sentence[1]);
       rB = this.getRegister(sentence[2].match(/%\w\w\w/)[0]);
       inumber = this.getImmNumber(sentence[2].match(/[+-]?\d+]/)[0]);
       has_reg = true;
       has_inum = true;
       code_fun = 0x40;
+      
     } else if(tokens[0] == this.MRMOVL){
       rA = this.getRegister(sentence[2]);
       rB = this.getRegister(sentence[1].match(/%\w\w\w/)[0]);
@@ -218,6 +214,7 @@ Assembler.prototype = {
       has_reg = true;
       has_inum = true;
       code_fun = 0x50;
+      
     } else if(tokens[0] == this.OPL){
       rA = this.getRegister(sentence[1]);
       rB = this.getRegister(sentence[2]);
@@ -227,6 +224,7 @@ Assembler.prototype = {
       else if(sentence[0] == "andl") code_fun = 0x62;
       else if(sentence[0] == "xorl") code_fun = 0x63;
       else code_fun = 0x63;
+      
     } else if(tokens[0] == this.JXX){
       if(tokens[1] == this.IMMEDIATELY){
         inumber = this.getImmNumber(sentence[1]);
@@ -245,6 +243,7 @@ Assembler.prototype = {
       else if(sentence[0] == "jne") code_fun = 0x74;
       else if(sentence[0] == "jge") code_fun = 0x75;
       else code_fun = 0x76;
+      
     } else if(tokens[0] == this.CALL){
       if(tokens[1] == this.IMMEDIATELY){
         inumber = this.getImmNumber(sentence[1]);
@@ -259,16 +258,20 @@ Assembler.prototype = {
       }
       has_inum = true;
       code_fun = 0x80;
+      
     } else if(tokens[0] == this.RET){
       code_fun = 0x90;
+      
     } else if(tokens[0] == this.PUSHL){
       rA = this.getRegister(sentence[1]);
       has_reg = true;
       code_fun = 0xa0;
+      
     } else if(tokens[0] == this.POPL){
       rA = this.getRegister(sentence[1]);
       has_reg = true;
       code_fun = 0xb0;
+      
     }
 
     if(tokens[0]>=0&&tokens[0]<=11){
@@ -353,7 +356,6 @@ Assembler.prototype = {
         }
       }
       if (flag == false) {
-        // TODO
         this.proError("wrong sentence");
         return;
       }
