@@ -1,3 +1,7 @@
+// GNU GENERAL PUBLIC LICENSE
+// Copyright (c) 2017 Zhenhuan Ouyang
+// oyzh@zju.edu.cn
+
 var exampleAssemCode = "\
 \n      .pos 0\n\
 init:   irmovl Stack, %esp # Set up stack pointer\n\
