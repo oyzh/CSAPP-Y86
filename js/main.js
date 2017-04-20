@@ -21,8 +21,7 @@ var app1 = new Vue({
 			{ text:'CC-ZF:'+machine.CC['ZF']},
 			{ text:'CC-SF:'+machine.CC['SF']},
 			{ text:'CC-OF:'+machine.CC['OF']},
-			{ text:'STAT:'+machine.STAT},
-			{ text:'Code:\n'+code_text}
+			{ text:'STAT:'+machine.STAT}
 			]
 	},
 	methods:{
@@ -41,9 +40,21 @@ var app1 = new Vue({
 			{ text:'CC-ZF:'+machine.CC['ZF']},
 			{ text:'CC-SF:'+machine.CC['SF']},
 			{ text:'CC-OF:'+machine.CC['OF']},
-			{ text:'STAT:'+machine.STAT},
-			{ text:'Code:\n'+code_text}
+			{ text:'STAT:'+machine.STAT}
 			];
 		}
+	}
+})
+
+var ntodos = [];
+var code_texts = code_text.split('\n');
+for (var i in code_texts){
+	ntodos[i] = {text:code_texts[i]};
+}
+
+var app2 = new Vue({
+	el: '#display-code',
+	data:{
+		todos:ntodos
 	}
 })
